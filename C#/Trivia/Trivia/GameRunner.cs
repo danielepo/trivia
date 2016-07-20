@@ -11,16 +11,19 @@ namespace Trivia
     {
 
         private static bool notAWinner;
-
+        // ok in the second iteration we have 20 minutes to build a golden master
         public static void Main(String[] args)
         {
+            Console.WriteLine("**********");
+            Console.WriteLine(args[0]);
+            Console.WriteLine("----------");
+
             Game aGame = new Game();
 
             aGame.add("Chet");
             aGame.add("Pat");
             aGame.add("Sue");
-
-            Random rand = new Random();
+            Random rand = new Random(int.Parse(args[0]));
 
             do
             {
@@ -39,7 +42,8 @@ namespace Trivia
 
 
             } while (notAWinner);
-
+            Console.WriteLine("__________");
+            
         }
 
 
