@@ -10,7 +10,8 @@ namespace UglyTrivia
     {
         List<string> players = new List<string>();
         // the player is going places...
-        int[] _places = new int[6];
+        // let's promote this one
+        protected int[] Places = new int[6];
         int[] _purses = new int[6];
 
         readonly bool[] _inPenaltyBox = new bool[6];
@@ -20,6 +21,7 @@ namespace UglyTrivia
         LinkedList<string> sportsQuestions = new LinkedList<string>();
         LinkedList<string> rockQuestions = new LinkedList<string>();
 
+        // by default 0
         private int _currentPlayer;
         private bool _isGettingOutOfPenaltyBox;
 
@@ -50,7 +52,7 @@ namespace UglyTrivia
         {
             // ADD?
             players.Add(playerName);
-            _places[HowManyPlayers()] = 0;
+            Places[HowManyPlayers()] = 0;
             _purses[HowManyPlayers()] = 0;
             _inPenaltyBox[HowManyPlayers()] = false;
 
@@ -76,10 +78,10 @@ namespace UglyTrivia
                     _isGettingOutOfPenaltyBox = true;
 
                     Console.WriteLine(players[_currentPlayer] + " is getting out of the penalty box");
-                    _places[_currentPlayer] = _places[_currentPlayer] + roll;
-                    if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
+                    Places[_currentPlayer] = Places[_currentPlayer] + roll;
+                    if (Places[_currentPlayer] > 11) Places[_currentPlayer] = Places[_currentPlayer] - 12;
 
-                    Console.WriteLine($"{players[_currentPlayer]}\'s new location is {_places[_currentPlayer]}");
+                    Console.WriteLine($"{players[_currentPlayer]}\'s new location is {Places[_currentPlayer]}");
                     Console.WriteLine("The category is " + CurrentCategory());
                     AskQuestion();
                 }
@@ -91,10 +93,10 @@ namespace UglyTrivia
             }
             else
             {
-                _places[_currentPlayer] = _places[_currentPlayer] + roll;
-                if (_places[_currentPlayer] > 11) _places[_currentPlayer] = _places[_currentPlayer] - 12;
+                Places[_currentPlayer] = Places[_currentPlayer] + roll;
+                if (Places[_currentPlayer] > 11) Places[_currentPlayer] = Places[_currentPlayer] - 12;
 
-                Console.WriteLine($"{players[_currentPlayer]}\'s new location is {_places[_currentPlayer]}");
+                Console.WriteLine($"{players[_currentPlayer]}\'s new location is {Places[_currentPlayer]}");
                 Console.WriteLine("The category is " + CurrentCategory());
                 AskQuestion();
             }
@@ -124,21 +126,32 @@ namespace UglyTrivia
             }
         }
 
+        // let's promote this method to protected virtual in order to testit
+        // testability wins over encapsulation
+        // how does it helps me?
+        // well actually not the virtual part so..
 
-        private string CurrentCategory()
+        // ok, now first of all I don't want to handle strigns where I should have an enum
+
+        
+        protected string CurrentCategory()
         {
 // ... this should be a dictionary...
             // where are 3, 7?
-            if (_places[_currentPlayer] == 0) return "Pop";
-            if (_places[_currentPlayer] == 1) return "Science";
-            if (_places[_currentPlayer] == 2) return "Sports";
-            if (_places[_currentPlayer] == 4) return "Pop";
-            if (_places[_currentPlayer] == 5) return "Science";
-            if (_places[_currentPlayer] == 6) return "Sports";
-            if (_places[_currentPlayer] == 8) return "Pop";
-            if (_places[_currentPlayer] == 9) return "Science";
-            if (_places[_currentPlayer] == 10) return "Sports";
-            return "Rock";
+            Category category;
+
+            if (Places[_currentPlayer] == 0) category = Category.Pop;
+            else if (Places[_currentPlayer] == 1) category = Category.Science;
+            else if (Places[_currentPlayer] == 2) category = Category.Sports;
+            else if (Places[_currentPlayer] == 4) category = Category.Pop;
+            else if (Places[_currentPlayer] == 5) category = Category.Science;
+            else if (Places[_currentPlayer] == 6) category = Category.Sports;
+            else if (Places[_currentPlayer] == 8) category = Category.Pop;
+            else if (Places[_currentPlayer] == 9) category = Category.Science;
+            else if (Places[_currentPlayer] == 10)category =  Category.Sports;
+            else category = Category.Rock;
+            return category.ToString();
+
         }
 
         public bool WasCorrectlyAnswered()
@@ -198,5 +211,13 @@ namespace UglyTrivia
         {
             return _purses[_currentPlayer] != 6;
         }
+    }
+
+    public enum Category
+    {
+        Pop,
+        Rock,
+        Sports,
+        Science
     }
 }

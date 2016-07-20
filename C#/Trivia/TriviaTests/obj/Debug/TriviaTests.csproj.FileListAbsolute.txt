@@ -1,0 +1,11 @@
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\bin\Debug\TriviaTests.dll
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\bin\Debug\TriviaTests.pdb
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\bin\Debug\nunit.framework.dll
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\bin\Debug\Trivia.exe
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\bin\Debug\Trivia.pdb
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\bin\Debug\nunit.framework.xml
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\obj\Debug\TriviaTests.csprojResolveAssemblyReference.cache
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\obj\Debug\TriviaTests.dll
+C:\Users\d.pozzobon\GitHubRepos\trivia\C#\Trivia\TriviaTests\obj\Debug\TriviaTests.pdb
