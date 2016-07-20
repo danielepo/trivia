@@ -73,7 +73,7 @@ namespace UglyTrivia
 
             if (_inPenaltyBox[_currentPlayer])
             {
-                if (roll%2 != 0)
+                if (roll % 2 != 0)
                 {
                     _isGettingOutOfPenaltyBox = true;
 
@@ -94,7 +94,9 @@ namespace UglyTrivia
             else
             {
                 Places[_currentPlayer] = Places[_currentPlayer] + roll;
-                if (Places[_currentPlayer] > 11) Places[_currentPlayer] = Places[_currentPlayer] - 12;
+                // looks like there are ate most 12 places
+                if (Places[_currentPlayer] > 11)
+                    Places[_currentPlayer] = Places[_currentPlayer] - 12;
 
                 Console.WriteLine($"{players[_currentPlayer]}\'s new location is {Places[_currentPlayer]}");
                 Console.WriteLine("The category is " + CurrentCategory());
@@ -133,24 +135,30 @@ namespace UglyTrivia
 
         // ok, now first of all I don't want to handle strigns where I should have an enum
 
-        
+
+        // it's important to notice that the postiion of the categories is an attribute 
+        // of the board and not Game itself. should be extracted to a class...
+        private readonly Category[] _categories = {
+                Category.Pop,
+                Category.Science,
+                Category.Sports,
+                Category.Rock,
+                Category.Pop,
+                Category.Science,
+                Category.Sports,
+                Category.Rock,
+                Category.Pop,
+                Category.Science,
+                Category.Sports,
+                Category.Rock
+            };
+
+        // this should actually return Category but we should first cover all the code that calls it...
+
         protected string CurrentCategory()
         {
-// ... this should be a dictionary...
-            // where are 3, 7?
-            Category category;
-
-            if (Places[_currentPlayer] == 0) category = Category.Pop;
-            else if (Places[_currentPlayer] == 1) category = Category.Science;
-            else if (Places[_currentPlayer] == 2) category = Category.Sports;
-            else if (Places[_currentPlayer] == 4) category = Category.Pop;
-            else if (Places[_currentPlayer] == 5) category = Category.Science;
-            else if (Places[_currentPlayer] == 6) category = Category.Sports;
-            else if (Places[_currentPlayer] == 8) category = Category.Pop;
-            else if (Places[_currentPlayer] == 9) category = Category.Science;
-            else if (Places[_currentPlayer] == 10)category =  Category.Sports;
-            else category = Category.Rock;
-            return category.ToString();
+            var place = Places[_currentPlayer];
+            return _categories[place].ToString();
 
         }
 
