@@ -14,16 +14,21 @@ namespace Trivia
         // ok in the second iteration we have 20 minutes to build a golden master
         public static void Main(String[] args)
         {
-            Console.WriteLine("**********");
-            Console.WriteLine(args[0]);
-            Console.WriteLine("----------");
+            var seed = int.Parse(args[1]);
+            var writeMaster = bool.Parse(args[0]);
+            if (writeMaster)
+            {
+                Console.WriteLine("**********");
+                Console.WriteLine(seed);
+                Console.WriteLine("----------");
+            }
 
             Game aGame = new Game();
 
             aGame.add("Chet");
             aGame.add("Pat");
             aGame.add("Sue");
-            Random rand = new Random(int.Parse(args[0]));
+            Random rand = new Random(seed);
 
             do
             {
@@ -42,8 +47,9 @@ namespace Trivia
 
 
             } while (notAWinner);
-            Console.WriteLine("__________");
-            
+            if (writeMaster)
+                Console.WriteLine("__________");
+
         }
 
 
