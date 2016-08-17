@@ -12,30 +12,44 @@ namespace TriviaTests
     [TestFixture]
     public class DeckTests
     {
-        private class GameForTests : Game
+        private class CardDeckForTests : CardDeck
         {
             public LinkedList<string> PopQuestions { get { return popQuestions; } }
             public LinkedList<string> RockQuestions { get { return rockQuestions; } }
             public LinkedList<string> ScienceQuestions { get { return scienceQuestions; } }
             public LinkedList<string> SportsQuestions { get { return sportsQuestions; } }
 
-            protected override string currentCategory()
+
+            public string AskQuestion(string category)
             {
-                return CategoryStub;
+                return Question(category);
             }
 
+        }
+        private class GameForTests : Game
+        {
+            
             public void AskQuestion()
             {
                 askQuestion();
             }
 
+            protected override string currentCategory()
+            {
+                return CategoryStub;
+            }
+
             public string CategoryStub { get; set; }
+
+            public GameForTests() : base(new CardDeck())
+            {
+            }
         }
         [Test]
 
         public void DeckInizializzedCorrectly()
         {
-            var game = new GameForTests();
+            var game = new CardDeckForTests();
             Assert.AreEqual(50, game.PopQuestions.Count);
             Assert.AreEqual(50, game.RockQuestions.Count);
             Assert.AreEqual(50, game.ScienceQuestions.Count);
@@ -54,8 +68,44 @@ namespace TriviaTests
             }
         }
         [Test]
-
         public void DeckReturnsQuestionForCategory()
+        {
+            var game = new CardDeckForTests();
+            Assert.AreEqual(50, game.PopQuestions.Count);
+            Assert.AreEqual(50, game.RockQuestions.Count);
+            Assert.AreEqual(50, game.ScienceQuestions.Count);
+            Assert.AreEqual(50, game.SportsQuestions.Count);
+
+            
+            Assert.AreEqual("Rock Question 0", game.AskQuestion("Rock"));
+            Assert.AreEqual(50, game.PopQuestions.Count);
+            Assert.AreEqual(49, game.RockQuestions.Count);
+            Assert.AreEqual(50, game.ScienceQuestions.Count);
+            Assert.AreEqual(50, game.SportsQuestions.Count);
+
+            Assert.AreEqual("Pop Question 0", game.AskQuestion("Pop"));
+            Assert.AreEqual(49, game.PopQuestions.Count);
+            Assert.AreEqual(49, game.RockQuestions.Count);
+            Assert.AreEqual(50, game.ScienceQuestions.Count);
+            Assert.AreEqual(50, game.SportsQuestions.Count);
+            
+            Assert.AreEqual("Science Question 0", game.AskQuestion("Science"));
+            Assert.AreEqual(49, game.PopQuestions.Count);
+            Assert.AreEqual(49, game.RockQuestions.Count);
+            Assert.AreEqual(49, game.ScienceQuestions.Count);
+            Assert.AreEqual(50, game.SportsQuestions.Count);
+
+            Assert.AreEqual("Sports Question 0", game.AskQuestion("Sports"));
+            Assert.AreEqual(49, game.PopQuestions.Count);
+            Assert.AreEqual(49, game.RockQuestions.Count);
+            Assert.AreEqual(49, game.ScienceQuestions.Count);
+            Assert.AreEqual(49, game.SportsQuestions.Count);
+            
+        }
+
+
+        [Test]
+        public void GameAsksQuestionForCategory()
         {
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
@@ -63,40 +113,15 @@ namespace TriviaTests
             Console.SetOut(writer);
 
             var game = new GameForTests();
-            Assert.AreEqual(50, game.PopQuestions.Count);
-            Assert.AreEqual(50, game.RockQuestions.Count);
-            Assert.AreEqual(50, game.ScienceQuestions.Count);
-            Assert.AreEqual(50, game.SportsQuestions.Count);
-
             game.CategoryStub = "Rock";
             game.AskQuestion();
-            Assert.AreEqual(50, game.PopQuestions.Count);
-            Assert.AreEqual(49, game.RockQuestions.Count);
-            Assert.AreEqual(50, game.ScienceQuestions.Count);
-            Assert.AreEqual(50, game.SportsQuestions.Count);
-
             game.CategoryStub = "Pop";
             game.AskQuestion();
-            Assert.AreEqual(49, game.PopQuestions.Count);
-            Assert.AreEqual(49, game.RockQuestions.Count);
-            Assert.AreEqual(50, game.ScienceQuestions.Count);
-            Assert.AreEqual(50, game.SportsQuestions.Count);
-            
             game.CategoryStub = "Science";
             game.AskQuestion();
-            Assert.AreEqual(49, game.PopQuestions.Count);
-            Assert.AreEqual(49, game.RockQuestions.Count);
-            Assert.AreEqual(49, game.ScienceQuestions.Count);
-            Assert.AreEqual(50, game.SportsQuestions.Count);
-            
             game.CategoryStub = "Sports";
             game.AskQuestion();
-            Assert.AreEqual(49, game.PopQuestions.Count);
-            Assert.AreEqual(49, game.RockQuestions.Count);
-            Assert.AreEqual(49, game.ScienceQuestions.Count);
-            Assert.AreEqual(49, game.SportsQuestions.Count);
-            
-            
+
             writer.Flush();
             stream.Position = 0;
             Assert.AreEqual("Rock Question 0", reader.ReadLine());

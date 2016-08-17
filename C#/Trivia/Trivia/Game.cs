@@ -5,9 +5,13 @@ using System.Text;
 
 namespace UglyTrivia
 {
-    public class Game : GameParent
+    public class Game
     {
-
+        private readonly CardDeck _deck;
+        public Game(CardDeck deck)
+        {
+            _deck = deck;
+        }
 
         List<string> players = new List<string>();
 
@@ -16,11 +20,11 @@ namespace UglyTrivia
 
         bool[] inPenaltyBox = new bool[6];
 
-    
+
         int currentPlayer = 0;
         bool isGettingOutOfPenaltyBox;
 
-  
+
 
         public bool isPlayable()
         {
@@ -92,7 +96,7 @@ namespace UglyTrivia
         protected void askQuestion()
         {
             var category = currentCategory();
-            var question = Question(category);
+            var question = _deck.Question(category);
             Console.WriteLine(question);
         }
 
@@ -177,7 +181,7 @@ namespace UglyTrivia
         }
     }
 
-    public class GameParent
+    public class CardDeck
     {
         protected LinkedList<string> popQuestions { get { return _popQuestions; } }
         protected LinkedList<string> scienceQuestions { get { return _scienceQuestions; } }
@@ -189,7 +193,7 @@ namespace UglyTrivia
         private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
         private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
 
-        public GameParent()
+        public CardDeck()
         {
             InitDeck();
         }
@@ -208,7 +212,7 @@ namespace UglyTrivia
         {
             return "Rock Question " + index;
         }
-        protected string Question(string category)
+        public string Question(string category)
         {
             string question = string.Empty;
             if (category == "Pop")

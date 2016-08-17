@@ -23,7 +23,7 @@ namespace Trivia
                 Console.WriteLine("----------");
             }
 
-            Game aGame = new Game();
+            Game aGame = new Game(new CardDeck());
 
             aGame.add("Chet");
             aGame.add("Pat");
