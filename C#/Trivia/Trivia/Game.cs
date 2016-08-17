@@ -16,10 +16,10 @@ namespace UglyTrivia
 
         bool[] inPenaltyBox = new bool[6];
 
-        LinkedList<string> popQuestions = new LinkedList<string>();
-        LinkedList<string> scienceQuestions = new LinkedList<string>();
-        LinkedList<string> sportsQuestions = new LinkedList<string>();
-        LinkedList<string> rockQuestions = new LinkedList<string>();
+        protected LinkedList<string> popQuestions = new LinkedList<string>();
+        protected LinkedList<string> scienceQuestions = new LinkedList<string>();
+        protected LinkedList<string> sportsQuestions = new LinkedList<string>();
+        protected LinkedList<string> rockQuestions = new LinkedList<string>();
 
         int currentPlayer = 0;
         bool isGettingOutOfPenaltyBox;

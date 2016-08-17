@@ -9,7 +9,6 @@ namespace TriviaTests
     [TestFixture]
     public class GoldenMaster
     {
-        [Test]
         public void TestMethod1()
         {
             // let's try to log all the output from a sigle game
@@ -31,6 +30,7 @@ namespace TriviaTests
         }
 
         [Test]
+        
         public void TestWithGold()
         {
             var file = File.ReadLines("gold.txt");
