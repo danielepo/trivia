@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UglyTrivia
 {
-    public class Game
+    public class Game : GameParent
     {
 
 
@@ -16,39 +16,11 @@ namespace UglyTrivia
 
         bool[] inPenaltyBox = new bool[6];
 
-        protected LinkedList<string> popQuestions { get { return _popQuestions; } }
-        protected LinkedList<string> scienceQuestions { get { return _scienceQuestions; } }
-        protected LinkedList<string> sportsQuestions { get { return _sportsQuestions; } }
-        protected LinkedList<string> rockQuestions { get { return _rockQuestions; } }
-
-        private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
-        private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
-
+    
         int currentPlayer = 0;
         bool isGettingOutOfPenaltyBox;
 
-        public Game()
-        {
-            InitDeck();
-        }
-
-        private void InitDeck()
-        {
-            for (int i = 0; i < 50; i++)
-            {
-                _popQuestions.AddLast("Pop Question " + i);
-                _scienceQuestions.AddLast(("Science Question " + i));
-                _sportsQuestions.AddLast(("Sports Question " + i));
-                _rockQuestions.AddLast(createRockQuestion(i));
-            }
-        }
-
-        public String createRockQuestion(int index)
-        {
-            return "Rock Question " + index;
-        }
+  
 
         public bool isPlayable()
         {
@@ -119,29 +91,11 @@ namespace UglyTrivia
 
         protected void askQuestion()
         {
-                string question = string.Empty;
-            if (currentCategory() == "Pop")
-            {
-                question = popQuestions.First();
-                popQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Science")
-            {
-                question = scienceQuestions.First();
-                scienceQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Sports")
-            {
-                question = sportsQuestions.First();
-                sportsQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Rock")
-            {
-                question = rockQuestions.First();
-                rockQuestions.RemoveFirst();
-            }
-                Console.WriteLine(question);
+            var category = currentCategory();
+            var question = Question(category);
+            Console.WriteLine(question);
         }
+
 
 
         protected virtual String currentCategory()
@@ -221,6 +175,65 @@ namespace UglyTrivia
         {
             return !(purses[currentPlayer] == 6);
         }
+    }
+
+    public class GameParent
+    {
+        protected LinkedList<string> popQuestions { get { return _popQuestions; } }
+        protected LinkedList<string> scienceQuestions { get { return _scienceQuestions; } }
+        protected LinkedList<string> sportsQuestions { get { return _sportsQuestions; } }
+        protected LinkedList<string> rockQuestions { get { return _rockQuestions; } }
+
+        private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
+        private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
+        private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
+        private readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
+
+        public GameParent()
+        {
+            InitDeck();
+        }
+
+        private void InitDeck()
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                _popQuestions.AddLast("Pop Question " + i);
+                _scienceQuestions.AddLast(("Science Question " + i));
+                _sportsQuestions.AddLast(("Sports Question " + i));
+                _rockQuestions.AddLast(createRockQuestion(i));
+            }
+        }
+        public String createRockQuestion(int index)
+        {
+            return "Rock Question " + index;
+        }
+        protected string Question(string category)
+        {
+            string question = string.Empty;
+            if (category == "Pop")
+            {
+                question = popQuestions.First();
+                popQuestions.RemoveFirst();
+            }
+            if (category == "Science")
+            {
+                question = scienceQuestions.First();
+                scienceQuestions.RemoveFirst();
+            }
+            if (category == "Sports")
+            {
+                question = sportsQuestions.First();
+                sportsQuestions.RemoveFirst();
+            }
+            if (category == "Rock")
+            {
+                question = rockQuestions.First();
+                rockQuestions.RemoveFirst();
+            }
+            return question;
+        }
+
     }
 
 }
