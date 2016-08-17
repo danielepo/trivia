@@ -107,7 +107,7 @@ namespace UglyTrivia
 
         }
 
-        private void askQuestion()
+        protected void askQuestion()
         {
             if (currentCategory() == "Pop")
             {
@@ -132,7 +132,7 @@ namespace UglyTrivia
         }
 
 
-        private String currentCategory()
+        protected virtual String currentCategory()
         {
             if (places[currentPlayer] == 0) return "Pop";
             if (places[currentPlayer] == 4) return "Pop";
