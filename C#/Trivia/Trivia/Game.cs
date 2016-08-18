@@ -68,12 +68,14 @@ namespace UglyTrivia
         {
             Console.WriteLine(players[currentPlayer] + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
+                var cat = currentCategory();
 
             if (inPenaltyBox[currentPlayer])
             {
                 if (roll % 2 != 0)
                 {
                     isGettingOutOfPenaltyBox = true;
+                    //console is one output of the system
 
                     Console.WriteLine(players[currentPlayer] + " is getting out of the penalty box");
                     places[currentPlayer] = places[currentPlayer] + roll;
@@ -83,7 +85,24 @@ namespace UglyTrivia
                             + "'s new location is "
                             + places[currentPlayer]);
                     Console.WriteLine("The category is " + currentCategory());
-                    askQuestion();
+                    Console.WriteLine(askQuestion(currentCategory(), popQuestions, scienceQuestions, sportsQuestions, rockQuestions));
+                    if (cat == "Pop")
+                    {
+                        popQuestions.RemoveFirst();
+                    }
+                    if (cat == "Science")
+                    {
+                        scienceQuestions.RemoveFirst();
+                    }
+                    if (cat == "Sports")
+                    {
+                        sportsQuestions.RemoveFirst();
+                    }
+                    if (cat == "Rock")
+                    {
+                        rockQuestions.RemoveFirst();
+                    }
+
                 }
                 else
                 {
@@ -102,35 +121,52 @@ namespace UglyTrivia
                         + "'s new location is "
                         + places[currentPlayer]);
                 Console.WriteLine("The category is " + currentCategory());
-                askQuestion();
+
+                Console.WriteLine(askQuestion(currentCategory(),popQuestions,scienceQuestions,sportsQuestions,rockQuestions));
+
+                if (cat== "Pop")
+                {
+                    popQuestions.RemoveFirst();
+                }
+                if (cat == "Science")
+                {
+                    scienceQuestions.RemoveFirst();
+                }
+                if (cat == "Sports")
+                {
+                    sportsQuestions.RemoveFirst();
+                }
+                if (cat == "Rock")
+                {
+                    rockQuestions.RemoveFirst();
+                }
             }
 
         }
 
-        private void askQuestion()
+        static private string askQuestion(string currentCategory,LinkedList<string> popQuestions,
+            LinkedList<string> scienceQuestions, LinkedList<string> sportsQuestions, LinkedList<string> rockQuestions)
         {
-            if (currentCategory() == "Pop")
+            string question = string.Empty;
+            if (currentCategory == "Pop")
             {
-                Console.WriteLine(popQuestions.First());
-                popQuestions.RemoveFirst();
+                question = popQuestions.First();
             }
-            if (currentCategory() == "Science")
+            if (currentCategory == "Science")
             {
-                Console.WriteLine(scienceQuestions.First());
-                scienceQuestions.RemoveFirst();
+                question = scienceQuestions.First();
             }
-            if (currentCategory() == "Sports")
+            if (currentCategory == "Sports")
             {
-                Console.WriteLine(sportsQuestions.First());
-                sportsQuestions.RemoveFirst();
+                question = sportsQuestions.First();
             }
-            if (currentCategory() == "Rock")
+            if (currentCategory == "Rock")
             {
-                Console.WriteLine(rockQuestions.First());
-                rockQuestions.RemoveFirst();
+                question = rockQuestions.First();
             }
+            return question;
         }
-
+        
 
         private String currentCategory()
         {
@@ -210,5 +246,11 @@ namespace UglyTrivia
             return !(purses[currentPlayer] == 6);
         }
     }
-
+    public static class LinkedListExtensions
+    {
+        static private LinkedList<string> removeQuestion(this LinkedList<string> questions)
+        {   
+            return new LinkedList<string>(questions.Skip(1));
+        }
+    }
 }
