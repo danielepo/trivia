@@ -5,6 +5,58 @@ using System.Text;
 
 namespace UglyTrivia
 {
+    public class Deck
+    {
+        private readonly IEnumerable<string> popQuestions;
+        private readonly IEnumerable<string> scienceQuestions;
+        private readonly IEnumerable<string> sportsQuestions;
+        private readonly IEnumerable<string> rockQuestions;
+
+        public Deck(IEnumerable<string> pop, IEnumerable<string> science, IEnumerable<string> sports, IEnumerable<string> rock)
+        {
+            popQuestions = pop;
+            scienceQuestions = science;
+            sportsQuestions = sports;
+            rockQuestions = rock;
+        }
+        public Tuple<string, Deck> RockQuestion
+        {
+            get
+            {
+                string question = rockQuestions.First();
+                var newDeck = new Deck(popQuestions, scienceQuestions, sportsQuestions, rockQuestions.Skip(1));
+                return Tuple.Create(question, newDeck);
+            }
+        }
+        public Tuple<string, Deck> PopQuestion
+        {
+            get
+            {
+                string question = popQuestions.First();
+                var newDeck = new Deck(popQuestions.Skip(1), scienceQuestions, sportsQuestions, rockQuestions);
+                return Tuple.Create(question, newDeck);
+            }
+        }
+        public Tuple<string, Deck> ScienceQuestion
+        {
+            get
+            {
+                string question = scienceQuestions.First();
+                var newDeck = new Deck(popQuestions, scienceQuestions.Skip(1), sportsQuestions, rockQuestions);
+                return Tuple.Create(question, newDeck);
+            }
+        }
+
+        public Tuple<string, Deck> SportsQuestion
+        {
+            get
+            {
+                string question = scienceQuestions.First();
+                var newDeck = new Deck(popQuestions, scienceQuestions, sportsQuestions.Skip(1), rockQuestions);
+                return Tuple.Create(question, newDeck);
+            }
+        }
+    }
     public class Game
     {
 
@@ -16,23 +68,24 @@ namespace UglyTrivia
 
         bool[] inPenaltyBox = new bool[6];
 
-        LinkedList<string> popQuestions = new LinkedList<string>();
-        LinkedList<string> scienceQuestions = new LinkedList<string>();
-        LinkedList<string> sportsQuestions = new LinkedList<string>();
-        LinkedList<string> rockQuestions = new LinkedList<string>();
 
         int currentPlayer = 0;
         bool isGettingOutOfPenaltyBox;
-
+        private Deck deck;
         public Game()
         {
+            IList<string> popQuestions = new List<string>();
+            IList<string> scienceQuestions = new List<string>();
+            IList<string> sportsQuestions = new List<string>();
+            IList<string> rockQuestions = new List<string>();
             for (int i = 0; i < 50; i++)
             {
-                popQuestions.AddLast("Pop Question " + i);
-                scienceQuestions.AddLast(("Science Question " + i));
-                sportsQuestions.AddLast(("Sports Question " + i));
-                rockQuestions.AddLast(createRockQuestion(i));
+                popQuestions.Add("Pop Question " + i);
+                scienceQuestions.Add(("Science Question " + i));
+                sportsQuestions.Add(("Sports Question " + i));
+                rockQuestions.Add(createRockQuestion(i));
             }
+            deck = new Deck(popQuestions, scienceQuestions, sportsQuestions, rockQuestions);
         }
 
         public String createRockQuestion(int index)
@@ -68,7 +121,7 @@ namespace UglyTrivia
         {
             Console.WriteLine(players[currentPlayer] + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
-                var cat = currentCategory();
+            var cat = currentCategory();
 
             if (inPenaltyBox[currentPlayer])
             {
@@ -85,23 +138,9 @@ namespace UglyTrivia
                             + "'s new location is "
                             + places[currentPlayer]);
                     Console.WriteLine("The category is " + currentCategory());
-                    Console.WriteLine(askQuestion(currentCategory(), popQuestions, scienceQuestions, sportsQuestions, rockQuestions));
-                    if (cat == "Pop")
-                    {
-                        popQuestions.RemoveFirst();
-                    }
-                    if (cat == "Science")
-                    {
-                        scienceQuestions.RemoveFirst();
-                    }
-                    if (cat == "Sports")
-                    {
-                        sportsQuestions.RemoveFirst();
-                    }
-                    if (cat == "Rock")
-                    {
-                        rockQuestions.RemoveFirst();
-                    }
+                    var question = askQuestion(currentCategory(), deck);
+                    Console.WriteLine(question.Item1);
+                    deck = question.Item2;
 
                 }
                 else
@@ -122,51 +161,36 @@ namespace UglyTrivia
                         + places[currentPlayer]);
                 Console.WriteLine("The category is " + currentCategory());
 
-                Console.WriteLine(askQuestion(currentCategory(),popQuestions,scienceQuestions,sportsQuestions,rockQuestions));
+                var question = askQuestion(currentCategory(), deck);
+                Console.WriteLine(question.Item1);
+                deck = question.Item2;
 
-                if (cat== "Pop")
-                {
-                    popQuestions.RemoveFirst();
-                }
-                if (cat == "Science")
-                {
-                    scienceQuestions.RemoveFirst();
-                }
-                if (cat == "Sports")
-                {
-                    sportsQuestions.RemoveFirst();
-                }
-                if (cat == "Rock")
-                {
-                    rockQuestions.RemoveFirst();
-                }
             }
 
         }
 
-        static private string askQuestion(string currentCategory,LinkedList<string> popQuestions,
-            LinkedList<string> scienceQuestions, LinkedList<string> sportsQuestions, LinkedList<string> rockQuestions)
+        static private Tuple<string, Deck> askQuestion(string currentCategory, Deck deck)
         {
-            string question = string.Empty;
+
             if (currentCategory == "Pop")
             {
-                question = popQuestions.First();
+                return deck.PopQuestion;
             }
             if (currentCategory == "Science")
             {
-                question = scienceQuestions.First();
+                return deck.ScienceQuestion;
             }
             if (currentCategory == "Sports")
             {
-                question = sportsQuestions.First();
+                return deck.SportsQuestion;
             }
             if (currentCategory == "Rock")
             {
-                question = rockQuestions.First();
+                return deck.RockQuestion;
             }
-            return question;
+            return Tuple.Create(string.Empty, deck);
         }
-        
+
 
         private String currentCategory()
         {
@@ -249,7 +273,7 @@ namespace UglyTrivia
     public static class LinkedListExtensions
     {
         static private LinkedList<string> removeQuestion(this LinkedList<string> questions)
-        {   
+        {
             return new LinkedList<string>(questions.Skip(1));
         }
     }
