@@ -131,8 +131,9 @@ namespace UglyTrivia
                     //console is one output of the system
 
                     Console.WriteLine(players[currentPlayer] + " is getting out of the penalty box");
-                    places[currentPlayer] = places[currentPlayer] + roll;
-                    if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+
+                    
+                    places[currentPlayer] = PlayerPlace(places, currentPlayer, roll);
 
                     Console.WriteLine(players[currentPlayer]
                             + "'s new location is "
@@ -153,8 +154,7 @@ namespace UglyTrivia
             else
             {
 
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+                places[currentPlayer] = PlayerPlace(places, currentPlayer, roll);
 
                 Console.WriteLine(players[currentPlayer]
                         + "'s new location is "
@@ -167,6 +167,15 @@ namespace UglyTrivia
 
             }
 
+        }
+
+        static private int PlayerPlace(int[] places, int currentPlayer, int roll)
+        {
+            var place = places[currentPlayer];
+            place = place + roll;
+            if (place > 11)
+                place = place - 12;
+            return place;
         }
 
         static private Tuple<string, Deck> askQuestion(string currentCategory, Deck deck)
